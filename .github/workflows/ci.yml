@@ -34,3 +34,7 @@ jobs:
         run: |
           dotnet run --project tests/BrimDeck.MediaTests -c Release --no-build
           if ($LASTEXITCODE -ne 0) { throw 'Media tests failed.' }
+      - name: Mac tests
+        run: |
+          dotnet run --project tests/BrimDeck.MacTests -c Release --no-build
+          if ($LASTEXITCODE -ne 0) { throw 'Mac tests failed.' }

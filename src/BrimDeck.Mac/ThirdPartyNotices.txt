@@ -1,0 +1,19 @@
+BrimDeck for macOS
+Copyright 2026 BrimDeck contributors
+
+This application is licensed under the Apache License 2.0. See the LICENSE file.
+
+The shared BrimDeck.Core library and its third-party notices are the same as the
+Windows edition. In addition, the macOS edition uses:
+
+Avalonia
+https://github.com/AvaloniaUI/Avalonia
+Copyright AvaloniaUI OÜ
+Licensed under the MIT License.
+
+Microsoft.Data.Sqlite
+https://github.com/dotnet/efcore
+Copyright .NET Foundation
+Licensed under the MIT License.
+
+The system monitor model follows ftop by Nongfsq, as noted in BrimDeck.Core.

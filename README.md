@@ -5,147 +5,76 @@
 
 <img src="docs/icon.png" width="96" alt="BrimDeck icon">
 
-# BrimDeck - A Dynamic Island for Windows
+# BrimDeck for macOS
 
-BrimDeck is a Dynamic Island for Windows 11 that brings your AI coding tool quotas, usage and the music you are playing together at the top of the screen.<br>
-It stays collapsed at the top of the screen and opens only when you need it.<br>
-A native Windows app built with C# and WPF, designed for performance and smoothness.
+The macOS edition of BrimDeck. It rests at the top of the screen and opens when you move the pointer over it, bringing AI coding quotas and the music you are playing into one place, along with how busy this Mac is.<br>
+The layout and the data model follow the [Windows original](https://github.com/MoFeng2223/BrimDeck). Quotas, themes and settings still live in the shared `BrimDeck.Core` library.
 
-[![Download](https://img.shields.io/badge/Download-Windows%2011%20x64-9CB9FF?style=flat-square)](https://github.com/MoFeng2223/BrimDeck/releases/latest)
-[![Latest release](https://img.shields.io/github/v/release/MoFeng2223/BrimDeck?style=flat-square&label=Latest&color=98DBB0)](https://github.com/MoFeng2223/BrimDeck/releases/latest)
 [![License](https://img.shields.io/badge/License-Apache%202.0-E5A385?style=flat-square)](LICENSE)
 ![Interface languages](https://img.shields.io/badge/Interface-English%20%7C%20%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-B9A8FF?style=flat-square)
 
-<p><a href="#features">Features</a> · <a href="#install">Install</a> · <a href="#quick-start">Quick start</a> · <a href="#privacy">Privacy</a> · <a href="#faq">FAQ</a> · <a href="#contributing">Contributing</a> · <a href="README.zh-CN.md">简体中文</a></p>
+<p><a href="#features">Features</a> · <a href="#install">Install</a> · <a href="#what-this-edition-covers">What this edition covers</a> · <a href="#build">Build</a></p>
 
-<img src="docs/en-US/images/hero.png" width="100%" alt="BrimDeck opens from the notch at the top of the screen into the AI usage panel, switches to the music page and then the system monitor page, then collapses">
+<img src="docs/mac/usage.png" width="100%" alt="The open usage page: Claude, Codex, Antigravity and Cursor">
 
 </div>
 
-## Why BrimDeck
-
-- **All quotas in one place**: Quotas for Claude, Codex, Cursor, Antigravity and more are shown in a single panel, so you no longer open each website, command line or app to check them.
-- **Quota checks made simple**: BrimDeck stays collapsed at the top of the screen. Move the pointer over it to open it, and move away to close it.
-- **Media control**: Preview and control the song that is playing inline; the cover, equalizer and lyrics follow the music.
-- **System monitor**: CPU, memory, network speed and other readings stay in the notch or capsule, visible at a glance.
-- **No interruptions in full screen**: Hides automatically while you play full-screen games or watch full-screen video, so it never opens by accident. Adjustable in settings.
-- **Works out of the box**: Detects Claude, Codex, Cursor and other tools already signed in on this PC. No keys to enter and no extra sign-in.
-- **Native Windows**: Built on .NET and WPF to deliver smooth animation with low resource use.
-
 ## Features
 
-### Collapsed styles
+BrimDeck sits at the top center of the screen. The default shape is a notch; a capsule and a thin indicator are in settings. Move the pointer over it to open, and away to close. Esc closes it while the panel is focused. The menu-bar icon opens it again, opens settings, or quits.
 
-BrimDeck sits at the top center of the screen and comes in three styles: Notch (default), Capsule and Indicator.
+<img src="docs/mac/notch.png" width="280" alt="Collapsed notch with quota rings, the track title and an equalizer">
 
-<table>
-  <tr>
-    <td align="center"><img src="docs/en-US/images/compact-notch.png" width="279" alt="Notch"><br>Notch (default)</td>
-    <td align="center"><img src="docs/en-US/images/compact-capsule.png" width="258" alt="Capsule"><br>Capsule</td>
-    <td align="center"><img src="docs/en-US/images/compact-line.png" width="128" alt="Indicator"><br>Indicator</td>
-  </tr>
-</table>
+- **Usage.** One column per tool shows the plan, quota and reset countdown. The footer totals tokens and estimated cost for today and the last 7 days. Claude Code, Codex, Cursor, Antigravity, ZCode, Kimi Code, DeepSeek Harness and the other sources from the original app are read the same way. On a Mac, Cursor's sign-in is read from `~/Library/Application Support/Cursor`.
+- **Music.** The Music app and Spotify supply the title, a lyric line, progress and playback controls. On Linux, `playerctl` is used when it is installed, so the page can be checked during development.
+- **System monitor.** CPU, memory, network speed and the busiest apps. Colors follow the panel theme.
+- **Themes.** Dark, Light, and the original set: One Dark Pro, GitHub, Dracula, Night Owl, Cyberpunk: Edgerunners and the others.
+- **Settings.** Language, launch at login, collapsed style and which tools are shown. API keys you type are stored in the login keychain, not as plain text.
 
-- Notch and Capsule show the highest quota usage of each tool as a ring, and preview the music that is playing with its cover, an equalizer, and the title or the current lyric line.
+<img src="docs/mac/music.png" width="72%" alt="Music page">
 
-  <img src="docs/en-US/images/compact-notch-lyrics.png" width="279" alt="Notch showing a lyric line">
-
-- The notch and capsule can show the time. It sits on the right when shown with the quota rings or music, and is centered when shown alone; its colors can be customized.
-
-  <img src="docs/en-US/images/compact-clock.png" width="567" alt="Clock in the notch: Simple, Seven segment and Serif styles beside the quota rings, and the clock shown alone, centered">
-
-- When a tool's quota usage rises to the warning (70%) or critical (90%) level, the collapsed view shows a notice for 5 seconds. You can turn this off in settings.
-
-  <img src="docs/en-US/images/compact-alert.png" width="390" alt="Quota notice: Claude 5-hour 91% used">
-
-- Notch and Capsule can show system readings next to the quota rings and the music.
-
-  <img src="docs/en-US/images/compact-monitor.png" width="474" alt="System readings in the notch: core columns, CPU, memory, GPU and network speed beside the quota rings">
-
-- The size and position of the Notch, Capsule and Indicator can be adjusted in settings.
-
-- By default it turns into the Indicator when a window is maximized, and hides during full-screen games or video so it never opens by accident.
-
-### AI usage
-
-<img src="docs/en-US/images/usage.png" width="100%" alt="AI usage page: quotas of Claude, Codex, Cursor and Antigravity in four columns">
-
-<img src="docs/en-US/images/details.png" width="100%" alt="Model details page: tokens and cost by app and model">
-
-- One column per tool shows the plan, quota usage and reset countdowns, for up to 7 tools at once.
-- The bottom of each column totals tokens and estimated cost for today and the last 7 days.
-- Token and cost details are available for each model, filtered by tool and date range.
-
-You can choose the quota providers and set the quota and usage source of each column separately. See [Supported tools](docs/en-US/ai-tools.md).
-
-### Music
-
-<img src="docs/en-US/images/music.png" width="63%" alt="Music page: cover, title, lyrics, progress bar and playback controls">
-
-- Shows song information, synced lyrics and playback progress, with playback controls, playback mode switching and seeking in supported players.
-- Works with several players at once; switch between them or pin one.
-
-Works with players that use Windows media controls, with extra support for some players. See [Supported players](docs/en-US/music-players.md).
-
-### System monitor
-
-<img src="docs/en-US/images/monitor.png" width="100%" alt="System monitor page: CPU usage and each core, GPU, memory, network speed and the busiest apps">
-
-- Shows CPU, GPU and memory usage and network speed in real time, along with the usage of each core.
-- Lists the busiest apps by CPU or memory; click an app for its details.
-- Colors follow the panel theme by default; several preset color schemes are offered, and you can make your own.
-
-The page is adapted from [ftop](https://github.com/Nongfsq/ftop) by Nongfsq (MIT License), a system monitor for macOS.
-
-### Panel themes
-
-<img src="docs/en-US/images/themes.png" width="100%" alt="The same AI usage page in the Dark, Light, Night Owl, Dracula and Cyberpunk: Edgerunners themes, and in an example custom theme">
-
-- Built-in themes include Dark, Light, One Dark Pro, GitHub Dark, GitHub Light, Dracula, Night Owl and Cyberpunk: Edgerunners.
-- On the Panel theme page in settings, you can change the background, foreground, accent and other colors and save them as a custom theme, or write a theme file by following the [theme guide](docs/en-US/themes.md).
+<img src="docs/mac/monitor.png" width="86%" alt="System monitor page">
 
 ## Install
 
-Requires Windows 11 (x64). Windows 10 (version 2004 or later) has limited support.
+Requires macOS 12 or later. From a machine with the .NET 10 SDK:
 
-1. Download and run `BrimDeck-<version>-Setup.exe` from [Releases](https://github.com/MoFeng2223/BrimDeck/releases/latest).
-2. If Windows shows "Windows protected your PC", select "More info", then "Run anyway".
+```bash
+scripts/publish-mac.sh osx-arm64   # Apple silicon
+scripts/publish-mac.sh osx-x64     # Intel
+```
 
-## Quick start
+That writes `artifacts/mac/BrimDeck-osx-arm64.app` (or the x64 bundle). Move it to Applications. If macOS blocks the first launch, allow it under System Settings → Privacy & Security.
 
-1. After you install and start BrimDeck, the panel appears at the top center of the primary display, showing Claude and Codex by default.
-2. Move the pointer over the panel to open it; move away or press Esc to close it.
-3. Select the settings button at the top right of the open panel to add tools or change settings. You can also right-click the open panel, double-click the tray icon, or right-click the tray icon.
+Launch at login installs `~/Library/LaunchAgents/app.brimdeck.mac.plist`. Quit from the menu-bar icon.
 
-## Uninstall
+## What this edition covers
 
-Uninstall BrimDeck from Apps in Windows Settings.
+The Windows window, native integrations and installer stay in the repository so the port can be compared and kept in step. The macOS app draws its interface with Avalonia.
 
-## Privacy
+- Players today are the Music app and Spotify.
+- Keys you enter are stored in the login keychain.
+- The monitor shows CPU, memory, network speed and the busiest apps. macOS does not report GPU usage without extra permission, so that reading is left blank.
+- When the front app is full screen, the panel follows the rule in settings and hides or becomes the indicator.
+- Global hotkeys are not wired up yet.
 
-- Reads only the sign-in state and usage records that apps already keep, and never changes, renews or ends their sign-ins.
-- Sign-in tokens are used only in memory and never written to disk; API keys you enter are stored on this PC, encrypted by Windows.
-- Goes online only to read quotas and usage, update model prices, fetch lyrics and covers, and check for updates. Conversations are never uploaded, and no usage data is collected.
+The Claude desktop app keeps its token in the keychain. This edition does not decrypt that token yet. A Claude Code sign-in in `~/.claude` is read. When a source cannot be read, the panel shows that status and does not invent a number.
 
-For the files BrimDeck reads and the addresses it connects to, see [Data and privacy](docs/en-US/privacy.md).
+## Build
 
-## FAQ
+```bash
+dotnet run --project src/BrimDeck.Mac
+```
 
-**A tool shows "Not connected" or "Waiting for update". What should I do?**
-Make sure the tool is signed in on this PC; for example, Antigravity needs its desktop app running for its quota to be read. When BrimDeck cannot read the data, it shows the actual status and never makes up numbers.
+`--preview` opens the panel with sample data and does not contact an account. `--language zh-CN` picks the interface language.
 
-**Is the cost shown what I actually pay?**
-No. Costs come from the amounts reported by each service or from public model prices, and are meant to show how much you use. Your actual subscription charges are on each provider's bill.
-
-## Contributing
-
-You are welcome to report problems, suggest features or ask for more tools and players in [Issues](https://github.com/MoFeng2223/BrimDeck/issues), and to contribute through pull requests.
-
-- Open pull requests against the `dev` branch, not `main`.
-- Upcoming work is listed in the [BrimDeck roadmap](https://github.com/MoFeng2223/BrimDeck/discussions/57). Suggest features under that post, and reply there when you want to take on one of its items. Other topics are welcome in [Discussions](https://github.com/MoFeng2223/BrimDeck/discussions).
+```bash
+dotnet run --project tests/BrimDeck.MacTests
+dotnet run --project tests/BrimDeck.Tests
+```
 
 ## License
 
-BrimDeck is licensed under the [Apache License 2.0](LICENSE). Third-party licenses are listed in [ThirdPartyNotices.txt](src/BrimDeck/ThirdPartyNotices.txt).
+[Apache License 2.0](LICENSE). Avalonia and SQLite are listed in [ThirdPartyNotices.txt](src/BrimDeck.Mac/ThirdPartyNotices.txt).
 
-The system monitor page is adapted from [ftop](https://github.com/Nongfsq/ftop) by Nongfsq, licensed under the MIT License; thanks to its author.
+The system-monitor model, as in the Windows app, is adapted from [ftop](https://github.com/Nongfsq/ftop) by Nongfsq (MIT).

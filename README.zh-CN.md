@@ -5,147 +5,76 @@
 
 <img src="docs/icon.png" width="96" alt="BrimDeck 图标">
 
-# BrimDeck - Windows 灵动岛
+# BrimDeck - macOS 灵动岛
 
-BrimDeck 是 Windows 11 上的灵动岛，在屏幕顶部集中显示 AI 编程工具的额度与用量，以及正在播放的音乐。<br>
-平时收起在屏幕顶部，只在需要时展开。<br>
-Windows 原生应用，使用 C# 与 WPF 开发，注重性能与流畅度。
+BrimDeck 的 macOS 版。屏幕顶部的刘海平时收着，移上去展开，集中看 AI 编程工具的额度和正在播放的音乐，也可以看这台 Mac 的占用。<br>
+界面和数据模型按 [Windows 原版](https://github.com/MoFeng2223/BrimDeck) 制作，用量、主题和设置仍由同一套 `BrimDeck.Core` 负责。
 
-[![下载](https://img.shields.io/badge/下载-Windows%2011%20x64-9CB9FF?style=flat-square)](https://github.com/MoFeng2223/BrimDeck/releases/latest)
-[![最新版本](https://img.shields.io/github/v/release/MoFeng2223/BrimDeck?style=flat-square&label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC&color=98DBB0)](https://github.com/MoFeng2223/BrimDeck/releases/latest)
 [![许可证](https://img.shields.io/badge/许可证-Apache%202.0-E5A385?style=flat-square)](LICENSE)
 ![界面语言](https://img.shields.io/badge/界面-简体中文%20%7C%20English-B9A8FF?style=flat-square)
 
-<p><a href="#功能">功能</a> · <a href="#安装">安装</a> · <a href="#快速开始">快速开始</a> · <a href="#隐私">隐私</a> · <a href="#常见问题">常见问题</a> · <a href="#参与开发">参与开发</a> · <a href="README.md">English</a></p>
+<p><a href="#功能">功能</a> · <a href="#安装">安装</a> · <a href="#这一版的范围">这一版的范围</a> · <a href="#从源码运行">从源码运行</a></p>
 
-<img src="docs/zh-CN/images/hero.png" width="100%" alt="BrimDeck 从屏幕顶部的刘海展开为 AI 用量面板，依次切换到音乐页和系统监控页，最后收起">
+<img src="docs/mac/usage.png" width="100%" alt="展开后的用量页：Claude、Codex、Antigravity、Cursor">
 
 </div>
 
-## 为什么选择 BrimDeck
-
-- **额度集中显示**：Claude、Codex、Cursor、Antigravity 等工具的额度集中在一个面板上，不必逐个打开网页、命令行或应用查看。
-- **简化额度查询操作**：平时收起在屏幕顶部，鼠标移上去即展开，移开即收起。
-- **媒体控制**：内联预览与控制正在播放的歌曲，封面、律动条与歌词随音乐变化。
-- **系统监控**：CPU、内存、网速等读数常驻在刘海或胶囊中，一眼即可看到。
-- **全屏免打扰**：全屏玩游戏或看视频时自动隐藏，避免误触展开；可在设置中调整。
-- **开箱即用**：自动识别本机已登录的 Claude、Codex、Cursor 等工具，无需填写密钥或重新登录。
-- **Windows 原生**：基于 .NET 与 WPF 构建，以较低的资源占用提供流畅的动画体验。
-
 ## 功能
 
-### 收起形态
+平时贴在屏幕顶部正中。默认是刘海，也可以改成胶囊或指示条。鼠标移上去展开，移开收起；面板有焦点时按 Esc 也会收起。菜单栏图标可以再次打开、进设置或退出。
 
-BrimDeck 平时位于屏幕顶部中央，提供刘海（默认）、胶囊和指示条三种样式。
+<img src="docs/mac/notch.png" width="280" alt="收起的刘海：配额环、歌名和律动条">
 
-<table>
-  <tr>
-    <td align="center"><img src="docs/zh-CN/images/compact-notch.png" width="279" alt="刘海"><br>刘海（默认）</td>
-    <td align="center"><img src="docs/zh-CN/images/compact-capsule.png" width="258" alt="胶囊"><br>胶囊</td>
-    <td align="center"><img src="docs/zh-CN/images/compact-line.png" width="128" alt="指示条"><br>指示条</td>
-  </tr>
-</table>
+- **用量。** 一列一个工具，显示套餐、配额和重置倒计时，底部是今日和近 7 日的 Token 与费用估算。Claude Code、Codex、Cursor、Antigravity、ZCode、Kimi Code、DeepSeek Harness 等沿用原版的读取方式。Cursor 读的是 `~/Library/Application Support/Cursor` 里的登录状态。
+- **音乐。** 接入「音乐」和 Spotify：封面占位、歌名、歌词行、进度和播放控制。Linux 上如果装了 `playerctl`，也会跟着系统里正在播放的播放器，方便开发时查看这一页。
+- **系统监控。** CPU、内存、网速，以及占用最高的几个应用。配色跟着面板主题。
+- **主题。** 深色、浅色，以及原版带的 One Dark Pro、GitHub、Dracula、Night Owl、赛博朋克等主题。
+- **设置。** 语言、登录时启动、收起形态、要显示的工具。手动填写的 API 密钥保存在登录钥匙串里，不写进明文文件。
 
-- 刘海与胶囊通过配额环显示各工具的最高配额使用率，并支持音乐预览，可显示封面、律动条、歌名或当前歌词。
+<img src="docs/mac/music.png" width="72%" alt="音乐页">
 
-  <img src="docs/zh-CN/images/compact-notch-lyrics.png" width="279" alt="刘海中显示歌词">
-
-- 刘海与胶囊可以显示时间，与配额环或音乐一起显示时位于右侧，单独显示时居中；可以自定义配色。
-
-  <img src="docs/zh-CN/images/compact-clock.png" width="567" alt="刘海中的时间：简约、数码管、衬线样式位于配额环右侧，单独显示时居中">
-
-- 某个工具的配额使用率升到预警（70%）或告警（90%）时，收起形态会显示提醒 5 秒；可在设置中关闭。
-
-  <img src="docs/zh-CN/images/compact-alert.png" width="388" alt="配额提醒：Claude 5 小时已用 91%">
-
-- 刘海与胶囊可以显示系统读数，与配额环、音乐并排显示。
-
-  <img src="docs/zh-CN/images/compact-monitor.png" width="474" alt="刘海中的系统读数：配额环旁显示核心柱、CPU、内存、GPU 与网速">
-
-- 刘海、胶囊和指示条的尺寸与位置可在设置中调整。
-
-- 窗口最大化时默认切换为指示条，全屏游戏或视频播放时默认隐藏，避免误触展开。
-
-### AI 用量
-
-<img src="docs/zh-CN/images/usage.png" width="100%" alt="AI 用量页：Claude、Codex、Cursor、Antigravity 四列配额">
-
-<img src="docs/zh-CN/images/details.png" width="100%" alt="模型明细页：按应用和模型列出 Token 用量与费用">
-
-- 按工具分列展示套餐、配额使用率与重置倒计时，最多同时显示 7 个工具。
-- 每列底部汇总今日和最近 7 天的 Token 用量与费用估算。
-- 可查看各模型的用量与费用明细，支持按工具和日期范围统计。
-
-可自定义配额提供商，并分别设置各列的配额与用量统计来源，详见[支持的工具](docs/zh-CN/ai-tools.md)。
-
-### 音乐
-
-<img src="docs/zh-CN/images/music.png" width="63%" alt="音乐页：封面、歌名、歌词、进度条和播放控制">
-
-- 显示歌曲信息、同步歌词与播放进度，支持播放控制、播放模式切换，以及受支持播放器的进度调节。
-- 支持同时接入多个播放器，可手动切换或固定显示其中一个。
-
-支持接入 Windows 系统媒体控制的播放器，并对部分播放器做了专门优化，详见[播放器支持](docs/zh-CN/music-players.md)。
-
-### 系统监控
-
-<img src="docs/zh-CN/images/monitor.png" width="100%" alt="系统监控页：CPU 占用与各核心使用率、GPU、内存、网速，以及占用最高的应用">
-
-- 实时显示 CPU、GPU、内存的占用和网络速度，以及每个核心的使用率。
-- 按 CPU 或内存列出占用最高的应用，点击应用可查看详情。
-- 配色默认跟随面板主题，也提供多种预设配色，并支持自定义。
-
-本页参考并改编自 Nongfsq 的 macOS 系统监控 [ftop](https://github.com/Nongfsq/ftop)（MIT 许可证）。
-
-### 面板主题
-
-<img src="docs/zh-CN/images/themes.png" width="100%" alt="同一个 AI 用量页在深色、浅色、Night Owl、Dracula、赛博朋克：边缘行者主题，以及一个自定义主题示例下的样子">
-
-- 内置深色、浅色、One Dark Pro、GitHub Dark、GitHub Light、Dracula、Night Owl、赛博朋克：边缘行者等主题。
-- 可以在设置的“面板主题”页修改背景、前景、强调色等颜色，并保存为自定义主题；也可以按[主题制作指南](docs/zh-CN/themes.md)编写主题文件。
+<img src="docs/mac/monitor.png" width="86%" alt="系统监控页">
 
 ## 安装
 
-需要 Windows 11（x64）。对 Windows 10（2004 及以上版本）提供有限支持。
+需要 macOS 12 或更新版本。在装有 .NET 10 SDK 的机器上打包：
 
-1. 从 [Releases](https://github.com/MoFeng2223/BrimDeck/releases/latest) 下载并运行 `BrimDeck-<版本>-Setup.exe`。
-2. 如出现“Windows 已保护你的电脑”提示，点击“更多信息”→“仍要运行”。
+```bash
+scripts/publish-mac.sh osx-arm64   # Apple 芯片
+scripts/publish-mac.sh osx-x64     # Intel
+```
 
-## 快速开始
+得到 `artifacts/mac/BrimDeck-osx-arm64.app`（或 x64）。把它拖到「应用程序」，第一次打开若被拦截，在「系统设置 → 隐私与安全性」里选择仍要打开。
 
-1. 安装并启动 BrimDeck 后，面板会出现在主显示器顶部中央，默认显示 Claude 和 Codex。
-2. 将鼠标移到面板上即可展开，移开鼠标或按 Esc 收起。
-3. 点击展开面板右上角的设置按钮，即可添加工具或调整设置；也可在展开的面板上点击右键，或双击系统托盘图标、通过托盘图标的右键菜单进入设置。
+登录时启动写的是 `~/Library/LaunchAgents/app.brimdeck.mac.plist`。菜单栏图标可以退出。
 
-## 卸载
+## 这一版的范围
 
-前往 Windows 设置中的“应用”卸载。
+Windows 原版的窗口、原生接口和安装包仍在仓库里，给对照和以后同步用。macOS 版用 Avalonia 画界面。
 
-## 隐私
+- 播放器目前是「音乐」和 Spotify。
+- 手动填写的密钥放在登录钥匙串。
+- 系统监控显示 CPU、内存、网速和占用最高的应用。macOS 不提供无需额外授权的 GPU 占用，所以这一项留空。
+- 前台应用进入全屏时，按设置里的规则收起或变成指示条。
+- 全局热键还没接上。
 
-- 仅读取应用已有的登录状态与用量记录，不会修改、续期或注销它们的登录。
-- 读取的登录令牌仅在内存中使用，不写入磁盘；手动填写的 API 密钥使用 Windows 的加密功能保存在本机。
-- 仅在获取配额与用量、同步模型单价、获取歌词与封面、检查更新时联网，不会上传会话内容，也不会收集使用数据。
+Claude 桌面版写在钥匙串里的令牌，这一版还没解密。`~/.claude` 里 Claude Code 的登录状态可以读。读不到时面板只显示实际状态，不会补一个数。
 
-读取了哪些文件、会连接哪些地址，详见[数据与隐私](docs/zh-CN/privacy.md)。
+## 从源码运行
 
-## 常见问题
+```bash
+dotnet run --project src/BrimDeck.Mac
+```
 
-**某个工具显示"未连接"或"等待更新"怎么办？**
-请确认该工具已在这台电脑上登录；例如 Antigravity 读取配额时需要桌面版正在运行。BrimDeck 读取不到数据时，只显示实际状态，不会显示虚假的数值。
+`--preview` 用示例数据打开界面，不访问账号。`--language zh-CN` 指定界面语言。
 
-**显示的费用是我实际支付的金额吗？**
-不是。费用按接口金额或公开的模型单价计算，适合用来了解用量高低；订阅套餐的实际扣费以各服务商的账单为准。
-
-## 参与开发
-
-欢迎通过 [Issues](https://github.com/MoFeng2223/BrimDeck/issues) 反馈问题、提出功能建议，或申请适配更多工具与播放器，也欢迎提交 Pull Request 参与开发。
-
-- Pull Request 请以 `dev` 分支为目标，不要直接合入 `main`。
-- 后续规划见 [BrimDeck 路线图](https://github.com/MoFeng2223/BrimDeck/discussions/57)。功能建议可以在帖子下讨论，想认领其中某项功能时，也可以直接在帖子下留言。其他话题可以在 [Discussions](https://github.com/MoFeng2223/BrimDeck/discussions) 中讨论。
+```bash
+dotnet run --project tests/BrimDeck.MacTests
+dotnet run --project tests/BrimDeck.Tests
+```
 
 ## 许可证
 
-BrimDeck 采用 [Apache License 2.0](LICENSE)。第三方组件的许可证见 [ThirdPartyNotices.txt](src/BrimDeck/ThirdPartyNotices.txt)。
+[Apache License 2.0](LICENSE)。Avalonia 与 SQLite 的许可见 [ThirdPartyNotices.txt](src/BrimDeck.Mac/ThirdPartyNotices.txt)。
 
-系统监控页参考并改编自 Nongfsq 的 [ftop](https://github.com/Nongfsq/ftop)，ftop 采用 MIT 许可证，感谢原作者。
+系统监控的数据模型和 Windows 原版一样，参考并改编自 Nongfsq 的 [ftop](https://github.com/Nongfsq/ftop)（MIT）。
