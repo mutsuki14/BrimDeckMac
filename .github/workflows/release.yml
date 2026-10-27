@@ -38,7 +38,8 @@ jobs:
           echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
   release:
     needs: check
-    runs-on: ubuntu-latest
+    # hdiutil, which writes the DMG, is part of macOS.
+    runs-on: macos-latest
     timeout-minutes: 40
     env:
       RELEASE_VERSION: ${{ needs.check.outputs.version }}
@@ -55,7 +56,7 @@ jobs:
           scripts/publish-mac.sh osx-arm64
           scripts/publish-mac.sh osx-x64
           cd artifacts/releases
-          sha256sum BrimDeck-*.zip | tee SHA256SUMS.txt
+          shasum -a 256 BrimDeck-*.dmg | tee SHA256SUMS.txt
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -65,11 +66,18 @@ jobs:
           notes="releases/${RELEASE_VERSION}-macos.md"
           if [ ! -f "$notes" ]; then notes="releases/${RELEASE_VERSION}.md"; fi
           files=(artifacts/releases/*)
-          draft_args=(release create "$RELEASE_TAG" "${files[@]}" --target "$RELEASE_COMMIT" --title "BrimDeck ${RELEASE_VERSION}" --notes-file "$notes" --draft)
-          if [ "$RELEASE_PRERELEASE" = "true" ]; then draft_args+=(--prerelease); fi
-          gh "${draft_args[@]}"
-          if [ "$RELEASE_PRERELEASE" = "true" ]; then
-            gh release edit "$RELEASE_TAG" --draft=false
+          title="BrimDeck ${RELEASE_VERSION}"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            while IFS= read -r name; do
+              [ -n "$name" ] || continue
+              gh release delete-asset "$RELEASE_TAG" "$name" --yes
+            done < <(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name')
+            gh release upload "$RELEASE_TAG" "${files[@]}" --clobber
+            gh release edit "$RELEASE_TAG" --target "$RELEASE_COMMIT" --title "$title" --notes-file "$notes" --draft=false
           else
-            gh release edit "$RELEASE_TAG" --draft=false --latest
+            args=(release create "$RELEASE_TAG" "${files[@]}" --target "$RELEASE_COMMIT" --title "$title" --notes-file "$notes" --draft)
+            if [ "$RELEASE_PRERELEASE" = "true" ]; then args+=(--prerelease); fi
+            gh "${args[@]}"
+            gh release edit "$RELEASE_TAG" --draft=false
           fi
+          if [ "$RELEASE_PRERELEASE" != "true" ]; then gh release edit "$RELEASE_TAG" --latest; fi

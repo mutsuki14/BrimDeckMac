@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Publish a self-contained BrimDeck.app and a zip of it.
+# Build a self-contained BrimDeck.app and a compressed DMG.
+# DMG creation uses hdiutil, so this script runs on macOS.
 # Usage: scripts/publish-mac.sh [osx-arm64|osx-x64]
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -9,13 +10,18 @@ case "$rid" in
   osx-x64) arch=x64 ;;
   *) echo "Use osx-arm64 or osx-x64" >&2; exit 1 ;;
 esac
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  echo "A DMG is created with hdiutil, which is part of macOS." >&2
+  exit 1
+fi
 version="$(grep -m1 '<Version>' "$root/src/BrimDeck.Mac/BrimDeck.Mac.csproj" | sed -E 's/.*<Version>([^<]+)<\/Version>.*/\1/')"
 stage="$root/artifacts/mac/$rid"
 pack="$root/artifacts/mac/pack-$rid"
 app="$pack/BrimDeck.app"
-zip="$root/artifacts/releases/BrimDeck-${version}-macos-${arch}.zip"
+dmg_root="$pack/dmg"
+dmg="$root/artifacts/releases/BrimDeck-${version}-macos-${arch}.dmg"
 rm -rf "$stage" "$pack"
-mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources" "$root/artifacts/releases"
+mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources" "$dmg_root" "$root/artifacts/releases"
 dotnet publish "$root/src/BrimDeck.Mac/BrimDeck.Mac.csproj" -c Release -r "$rid" --self-contained true -p:Version="$version" -o "$stage"
 cp -R "$stage"/. "$app/Contents/MacOS/"
 cat > "$app/Contents/Info.plist" <<EOF
@@ -35,7 +41,9 @@ cat > "$app/Contents/Info.plist" <<EOF
   <key>NSHighResolutionCapable</key><true/>
 </dict></plist>
 EOF
-rm -f "$zip"
-( cd "$pack" && zip -r -y -q "$zip" BrimDeck.app )
+cp -R "$app" "$dmg_root/BrimDeck.app"
+ln -s /Applications "$dmg_root/Applications"
+rm -f "$dmg"
+hdiutil create -volname "BrimDeck" -srcfolder "$dmg_root" -ov -format UDZO "$dmg"
 echo "Wrote $app"
-echo "Wrote $zip"
+echo "Wrote $dmg"
