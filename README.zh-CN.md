@@ -37,14 +37,14 @@ BrimDeck 的 macOS 版。屏幕顶部的刘海平时收着，移上去展开，�
 
 ## 安装
 
-需要 macOS 12 或更新版本。在装有 .NET 10 SDK 的机器上打包：
+需要 macOS 12 或更新版本。从 [Releases](https://github.com/mutsuki14/BrimDeckMac/releases/latest) 下载对应芯片的 DMG，打开后把 BrimDeck 拖进「应用程序」。第一次打开若被拦截，在「系统设置 → 隐私与安全性」里选择仍要打开。
+
+在 Mac 上也可以自己打包，脚本会用 `hdiutil` 生成 DMG：
 
 ```bash
 scripts/publish-mac.sh osx-arm64   # Apple 芯片
 scripts/publish-mac.sh osx-x64     # Intel
 ```
-
-得到 `artifacts/mac/BrimDeck-osx-arm64.app`（或 x64）。把它拖到「应用程序」，第一次打开若被拦截，在「系统设置 → 隐私与安全性」里选择仍要打开。
 
 登录时启动写的是 `~/Library/LaunchAgents/app.brimdeck.mac.plist`。菜单栏图标可以退出。
 

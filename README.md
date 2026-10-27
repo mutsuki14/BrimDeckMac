@@ -37,14 +37,14 @@ BrimDeck sits at the top center of the screen. The default shape is a notch; a c
 
 ## Install
 
-Requires macOS 12 or later. From a machine with the .NET 10 SDK:
+Requires macOS 12 or later. Download the DMG for your Mac from [Releases](https://github.com/mutsuki14/BrimDeckMac/releases/latest), open it, and drag BrimDeck into Applications. If macOS blocks the first launch, allow it under System Settings → Privacy & Security.
+
+You can also build the disk image on a Mac. The script uses `hdiutil`:
 
 ```bash
 scripts/publish-mac.sh osx-arm64   # Apple silicon
 scripts/publish-mac.sh osx-x64     # Intel
 ```
-
-That writes `artifacts/mac/BrimDeck-osx-arm64.app` (or the x64 bundle). Move it to Applications. If macOS blocks the first launch, allow it under System Settings → Privacy & Security.
 
 Launch at login installs `~/Library/LaunchAgents/app.brimdeck.mac.plist`. Quit from the menu-bar icon.
 
